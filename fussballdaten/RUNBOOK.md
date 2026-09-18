@@ -139,3 +139,45 @@ else — every generated card is a fresh design created from the template, and
 To update a template's design, edit it in Canva directly. Publishing a
 corrected design through `publish-brand-template` would mint a *new* template
 id and leave the old one behind, which is worse.
+
+## Scheduling: why the runs are self-bind wake-ups
+
+A fresh-session Routine (`create_trigger` with `create_new_session_on_fire`)
+**cannot** do this job on this account. Two findings, 2026-09-18:
+
+- The `connectors` parameter is rejected outright: *"the connectors parameter
+  is not available for this organization."*
+- Creating the Routine without it succeeds but stores `mcp_connections: []`,
+  and the tool warns that the fired session will run with no `mcp__*` tools.
+
+A session with no Canva and no Buffer cannot build or publish anything, so that
+route was abandoned rather than left to fail at fire time.
+
+What is used instead: `send_later`, which schedules a message back into a
+session that already holds both connectors. Its delivery survives container
+restarts. One wake-up per match, fired at kickoff+105, carrying the fixture id,
+the hashtag set and the cutoff.
+
+The trade-off is a single point of failure: every run of the matchday depends
+on that one session still being reachable. If it is not, nothing publishes and
+nothing is corrupted — it fails closed.
+
+The durable fix, when a whole season is scheduled rather than one matchday, is
+to create the Routines from the claude.ai Routines UI, where connectors can be
+attached to a fresh-session Routine. Do that before scaling past one matchday.
+
+### Fire times
+
+    fire   = kickoff + 105 min
+    cutoff = kickoff + 120 min
+
+Matchday 4, one match per kickoff slot:
+
+| fixture | match | fire (UTC) |
+|---|---|---|
+| 883113 | Bayern – Union Berlin | Fri 20:15 |
+| 883118 | Hamburg – Köln | Sat 15:15 |
+| 883114 | Stuttgart – Dortmund | Sat 18:15 |
+| 883115 | Leverkusen – RB Leipzig | Sun 15:15 |
+| 883120 | Schalke – Elversberg | Sun 17:15 |
+| 883121 | Paderborn – Hoffenheim | Sun 19:15 |
