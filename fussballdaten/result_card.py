@@ -124,8 +124,11 @@ FIELD_ELEMENTS = {
 }
 LOGO_ELEMENTS = {"home_logo": "LB4jrnRJK4sb2Htt", "away_logo": "LBRyYz96WKm2Bt8d"}
 
-# Crest slots in the 1600x900 landscape cards: (left, top, size).
+# Crest slots: (left, top, size). Both sets are symmetric about the page
+# centre, which the brand template's own placeholders are not — they sit a few
+# pixels off and at two different sizes. Centre beats matching the template.
 LANDSCAPE_SLOTS = {"home": (481, 156, 158), "away": (961, 156, 158)}
+PORTRAIT_SLOTS = {"home": (212, 196, 180), "away": (688, 196, 180)}
 
 
 def edit_operations(payload, manifest, page_id, slots=None):
