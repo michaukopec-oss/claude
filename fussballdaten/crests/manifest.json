@@ -160,5 +160,23 @@
   "ratio": 0.919,
   "svg": "https://storage.fussballdaten.de/source/1/vereinhaupt/353/svg/vfb_stuttgart_Wh42S.svg",
   "canva_asset_id": "MAHVh1VhzzE"
+ },
+ "442": {
+  "name": "VfL Wolfsburg",
+  "file": "vfl-wolfsburg.png",
+  "w": 512,
+  "h": 512,
+  "ratio": 1.0,
+  "svg": "https://storage.fussballdaten.de/source/1/vereinhaupt/362/svg/vfl_wolfsburg_ZJ1NJ.svg",
+  "canva_asset_id": "MAHVilMcoFE"
+ },
+ "316": {
+  "name": "SV Darmstadt 98",
+  "file": "sv-darmstadt-98.png",
+  "w": 512,
+  "h": 512,
+  "ratio": 1.0,
+  "svg": "https://storage.fussballdaten.de/source/1/vereinhaupt/293/svg/sv_darmstadt_98_04Su2.svg",
+  "canva_asset_id": "MAHViuQE_Vg"
  }
 }
