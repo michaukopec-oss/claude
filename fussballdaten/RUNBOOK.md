@@ -6,7 +6,9 @@ and downloaded by hand.
 
 ## Preconditions
 
-- `FUSSBALLDATEN_TOKEN` in the environment. Never print it.
+- `FUSSBALLDATEN_TOKEN` in the environment. Never print it. The header is
+  `Authorization: <token>` with **no** `Bearer` prefix — `Bearer` returns 401,
+  as do `X-Auth-Token` and `X-API-Key`.
 - Canva and Buffer connectors authorized.
 - `crests/manifest.json` current: every club in the fixture must have a
   `canva_asset_id`. A missing club is a stop, not a guess (see Failure modes).
@@ -48,11 +50,16 @@ card at all.
 5. **Export** as PNG. Do not send a `quality` field — the export endpoint
    rejects it with "Invalid MP4 quality value".
 
-6. **Gate the export URL** with `expiry_gate.py` before scheduling anything.
+6. **Write the copy** with `result_copy.build_copy(payload, hashtags)`
+   (`result_copy.py`). Returns `instagram`, `facebook` and `x` text plus the
+   `angles` it chose. The X variant is length-checked and falls back to
+   score-plus-angle if the scorer lines would break 280 characters.
+
+7. **Gate the export URL** with `expiry_gate.py` before scheduling anything.
    Canva export URLs live roughly 1.5-2 hours. `response-expires` in the query
    string is authoritative; `X-Amz-Date` is not reliable.
 
-7. **Publish via Buffer.** Post-match is time-critical, so publish immediately
+8. **Publish via Buffer.** Post-match is time-critical, so publish immediately
    rather than scheduling — the expiry gate then has hours of headroom instead
    of minutes.
 
@@ -86,8 +93,29 @@ card at all.
 - **Vectors cannot fill frames.** `update_fill` rejects them outright, and
   `upload-asset-from-url` caps its url at 2048 chars so a data URI cannot carry
   a real PNG either. This is why the crest pack is pre-rendered.
-- **Publishing is not autonomous.** Nothing goes to a live channel without the
-  user's explicit go-ahead for that run.
+- **Own goals appear in both scorer lists.** The scoring player is listed under
+  the team that *benefited*, and again under their own team for any real goal
+  they scored. In Bayern 5:1 Stuttgart, Vagnoman appears on both sides. Copy
+  must carry the `ET` flag or the same surname reads as two goals for two
+  different teams in one post. `result_copy._scorers()` handles this.
+
+## Autonomy
+
+Publishing **is** autonomous, by the user's decision of 2026-09-18: on a
+completed run the session publishes immediately to Instagram, Facebook and X
+without waiting for approval. Scope is one match per kickoff slot, not all nine.
+
+This makes the gates the only thing between bad data and a live post, so none
+of them are advisory:
+
+- `ready(payload)` must be true — status `post` **and** a populated full-time
+  score.
+- Every club in the fixture must resolve to a `canva_asset_id`.
+- The rendered thumbnail must be checked against the payload score before the
+  transaction is committed.
+- At kickoff+120 with no ready payload: abandon, notify, publish nothing.
+
+Any gate that fails is a stop and a notification, never a best guess.
 
 ## Brand template editing is not available
 
