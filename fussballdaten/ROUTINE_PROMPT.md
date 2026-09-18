@@ -26,6 +26,8 @@ unaffected either way.
 Automated post-match report: <HOME> vs <AWAY>, Bundesliga fixture <FIXTURE_ID>.   <-- CHANGE
 Hard cutoff: <CUTOFF_UTC>.                                                        <-- CHANGE
 Hashtags: "#Bundesliga <FIXTURE_HASHTAG> #<N>Spieltag #fussballdaten"             <-- CHANGE
+          (four here on purpose: Instagram takes at most five, and the
+           caption is trimmed to the first five if you add more)
 
 You are running unattended and publishing live to real social channels. Nobody
 reviews this before it goes out. Publish only if every gate passes.

@@ -13,6 +13,28 @@ without adding facts.
 
 MAX_X_CHARS = 280
 
+# Instagram counts hashtags against a cap of five per caption. Anything past
+# the fifth is dead weight at best, so the cap is enforced here rather than
+# trusted to whoever writes the hashtag string.
+MAX_IG_HASHTAGS = 5
+
+
+def cap_hashtags(hashtags, limit=MAX_IG_HASHTAGS):
+    """Keep the first `limit` hashtags and drop the rest.
+
+    Callers pass them most-specific-first (competition, fixture, matchday,
+    theme, brand), so trimming from the end loses the least. Non-hashtag
+    words are kept wherever they sit and do not count against the limit.
+    """
+    out, seen = [], 0
+    for tok in hashtags.split():
+        if tok.startswith("#"):
+            seen += 1
+            if seen > limit:
+                continue
+        out.append(tok)
+    return " ".join(out)
+
 
 def _minute(raw):
     """'45+2\\'' -> '45.+2', '21\\'' -> '21.'"""
@@ -148,8 +170,9 @@ def build_copy(payload, hashtags=""):
         if as_:
             ig.append(f"⚽ {away}: {as_}")
     ig += ["", "Wie habt ihr das Spiel gesehen? 👇"]
-    if hashtags:
-        ig += ["", hashtags]
+    ig_tags = cap_hashtags(hashtags)
+    if ig_tags:
+        ig += ["", ig_tags]
 
     fb = [f"Endstand: {line}", "", _headline(tags), "", _context(payload)]
     if hs or as_:

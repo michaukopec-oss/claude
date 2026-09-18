@@ -53,7 +53,9 @@ card at all.
 6. **Write the copy** with `result_copy.build_copy(payload, hashtags)`
    (`result_copy.py`). Returns `instagram`, `facebook` and `x` text plus the
    `angles` it chose. The X variant is length-checked and falls back to
-   score-plus-angle if the scorer lines would break 280 characters.
+   score-plus-angle if the scorer lines would break 280 characters. The
+   Instagram variant is capped at five hashtags (see below); X and Facebook
+   take the full string.
 
 7. **Gate the export URL** with `expiry_gate.py` before scheduling anything.
    Canva export URLs live roughly 1.5-2 hours. `response-expires` in the query
@@ -104,6 +106,12 @@ card at all.
 | export URL near expiry | re-export rather than publishing a dead link |
 
 ## Things that will bite
+
+- **Instagram takes five hashtags, no more.** `result_copy.cap_hashtags()`
+  trims the Instagram caption to `MAX_IG_HASHTAGS`, so an over-long hashtag
+  string in a routine prompt still publishes. Hand-written copy has no such
+  safety net: count them. Order the string most-specific-first — competition,
+  fixture, matchday, theme, brand — because the cap cuts from the end.
 
 - **Reset the crop after every crest fill.** An element's image box keeps its
   scale through a resize, so a fill without `crop_media` clips the badge.
