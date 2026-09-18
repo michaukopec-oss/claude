@@ -107,6 +107,15 @@ card at all.
 
 ## Things that will bite
 
+- **The live feed's score is not the result.** In Bayern-Union (MD4) the
+  `status: live` payload read 7:0 at minute 89, 8:0 at minute 94, and the
+  final `status: post` payload read 7:0 with seven goal entries running 1:0
+  to 7:0 and the last on 76 minutes. A goal appeared in the live feed and was
+  gone from the official record. Publishing on score alone would have put an
+  8:0 card out. This is what `ready()`'s `status == "post"` check is for, and
+  why no run may relax it to "the score looks final".
+
+
 - **Instagram takes five hashtags, no more.** `result_copy.cap_hashtags()`
   trims the Instagram caption to `MAX_IG_HASHTAGS`, so an over-long hashtag
   string in a routine prompt still publishes. Hand-written copy has no such
