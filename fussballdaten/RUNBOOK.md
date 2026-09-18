@@ -110,8 +110,9 @@ card at all.
 - **Instagram takes five hashtags, no more.** `result_copy.cap_hashtags()`
   trims the Instagram caption to `MAX_IG_HASHTAGS`, so an over-long hashtag
   string in a routine prompt still publishes. Hand-written copy has no such
-  safety net: count them. Order the string most-specific-first — competition,
-  fixture, matchday, theme, brand — because the cap cuts from the end.
+  safety net: count them. The cap cuts from the end, so put the tags you
+  cannot lose first — the brand tag included, even though the published
+  posts happen to carry it last in a set of four.
 
 - **Reset the crop after every crest fill.** An element's image box keeps its
   scale through a resize, so a fill without `crop_media` clips the badge.
