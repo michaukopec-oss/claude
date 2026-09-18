@@ -88,3 +88,26 @@ card at all.
   a real PNG either. This is why the crest pack is pre-rendered.
 - **Publishing is not autonomous.** Nothing goes to a live channel without the
   user's explicit go-ahead for that run.
+
+## Brand template editing is not available
+
+`create-brand-template-draft`, and reading an existing brand template's
+content, are refused for every template on this account — including ones the
+user created by hand in the Canva UI:
+
+    User does not have permission to access brand template with id '...'
+
+Confirmed after a full disconnect/reconnect of the connector and a clean app
+restart, against three separate templates of different origin. Metadata and
+creation work fine (`search-brand-templates`, `get-brand-template-dataset`,
+`publish-brand-template`), so this is Canva gating the content endpoints by
+plan tier, not a scope or ownership problem. Do not retry it.
+
+Consequence: the placeholder artwork inside a template can only be changed in
+the Canva UI. This affects the thumbnail shown in the template list and nothing
+else — every generated card is a fresh design created from the template, and
+`edit_operations()` replaces both crests as part of the normal fill.
+
+To update a template's design, edit it in Canva directly. Publishing a
+corrected design through `publish-brand-template` would mint a *new* template
+id and leave the old one behind, which is worse.
