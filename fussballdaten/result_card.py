@@ -101,3 +101,60 @@ def fit_crest(ratio, slot_left, slot_top, slot=148):
         # old scale and the mark gets clipped — the ratio survives a resize.
         "crop": {"top": 0, "left": 0, "width": round(w, 2), "height": round(h, 2)},
     }
+
+
+# --- Canva edit operations -------------------------------------------------
+
+# Element locator ids in the landscape templates (stable across designs created
+# from them). Page prefix is supplied at call time.
+FIELD_ELEMENTS = {
+    "headline": "LBhQW9ydxhKhM10G", "match_info": "LBKxyYH3wg4bZxCb",
+    "score": "LBVfhWW1qrGPJtpv",    "halftime": "LBP6wvC5HCy3Dqfx",
+    "home_name": "LBnsxcXnHDmqYHKg", "away_name": "LBJ9dpS70sLwTwlg",
+    "home_scorers": "LBcXWWyZv8wlpRPv", "away_scorers": "LBGTkmLKpK0QMJS8",
+    "label_1": "LBZkh7k6gZzRdjyl", "label_2": "LB2gSpdTfQD2rCrs",
+    "label_3": "LBVQ1CrF97lMwHTD", "label_4": "LBLvRd2vs6hHMjp2",
+    "label_5": "LB5y4ybcw6vghYxW", "label_6": "LBnMwYctpGSfGfCt",
+    "home_stat_1": "LB4bZbVPp7kPqr0V", "away_stat_1": "LBl0Hczykfq7jhvp",
+    "home_stat_2": "LBLHsxSB2ZvyskyR", "away_stat_2": "LBl3BTkXv0C3GQ39",
+    "home_stat_3": "LBXK9FW6r1KsjpDq", "away_stat_3": "LBpxxYnQQnXRmJyW",
+    "home_stat_4": "LB01drMKgjxfVpmf", "away_stat_4": "LBGwrKMZ2YtP9p89",
+    "home_stat_5": "LB0dSMqlWZ1XVJYX", "away_stat_5": "LBdG2hKcsHbmVv47",
+    "home_stat_6": "LBVGcFGvhkmSGMw0", "away_stat_6": "LBkFSQBbgHvHSS3R",
+}
+LOGO_ELEMENTS = {"home_logo": "LB4jrnRJK4sb2Htt", "away_logo": "LBRyYz96WKm2Bt8d"}
+
+# Crest slots in the 1600x900 landscape cards: (left, top, size).
+LANDSCAPE_SLOTS = {"home": (481, 156, 158), "away": (961, 156, 158)}
+
+
+def edit_operations(payload, manifest, page_id, slots=None):
+    """Full edit-design operation list for one match.
+
+    `manifest` is crests/manifest.json (teamId -> canva_asset_id + ratio).
+    Crests are filled by asset id, then sized to their own aspect ratio and
+    re-cropped — the crop must be reset explicitly, because an element's image
+    box keeps its scale through a resize and would clip the mark.
+    """
+    slots = slots or LANDSCAPE_SLOTS
+    d = payload["data"]
+    ops = [
+        {"type": "replace_text", "locator_id": f"{page_id}-{FIELD_ELEMENTS[k]}", "text": v}
+        for k, v in build(payload).items() if k in FIELD_ELEMENTS
+    ]
+    for side in ("home", "away"):
+        crest = manifest[str(d[side]["teamId"])]
+        left, top, size = slots[side]
+        g = fit_crest(crest["ratio"], left, top, size)
+        loc = f"{page_id}-{LOGO_ELEMENTS[side + '_logo']}"
+        ops += [
+            {"type": "update_fill", "locator_id": loc, "asset_type": "image",
+             "asset_id": crest["canva_asset_id"],
+             "alt_text": f"{crest['name']} club crest"},
+            {"type": "resize_element", "locator_id": loc, "preserve_aspect_ratio": False,
+             "width": g["width"], "height": g["height"]},
+            {"type": "position_element", "locator_id": loc,
+             "top": g["top"], "left": g["left"]},
+            {"type": "crop_media", "locator_id": loc, **g["crop"]},
+        ]
+    return ops
