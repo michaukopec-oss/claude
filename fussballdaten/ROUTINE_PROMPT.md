@@ -75,6 +75,24 @@ cannot be refreshed.
 Report what you published with links, or what stopped you.
 ```
 
+## One match, one mechanism
+
+A fixture must be owned by exactly one trigger. A web Routine and a `send_later`
+wake-up pointed at the same fixture both publish, and the result is the same
+post twice on all three channels. Before enabling a Routine for a match, delete
+the wake-up for it (or vice versa) — checked with `list_triggers`, comparing
+`next_run_at` values.
+
+When fixing a Routine that currently collides, **change the schedule first and
+the environment second**. In that order a half-finished edit is harmless: the
+run either fires at the wrong time and fails closed on the environment, or does
+not fire at all. In the other order, a fixed environment plus an unfixed
+schedule is exactly the double-post.
+
+Agents cannot edit a Routine created in the web UI — `update_trigger` refuses
+with *"Agents can only update routines they created."* Web-created Routines are
+edited by the user at claude.ai/code/routines, or disabled by their own run.
+
 ## Gotchas
 
 - **Schedule stagger.** Routine runs "may start a few minutes after the
