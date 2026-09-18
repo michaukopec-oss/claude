@@ -1,0 +1,146 @@
+{
+ "362": {
+  "name": "1. FC Köln",
+  "file": "1-fc-k-ln.png",
+  "w": 512,
+  "h": 583,
+  "ratio": 0.878,
+  "svg": "https://storage.fussballdaten.de/source/1/vereinhaupt/317/svg/1__fc_koeln_sZlPY.svg"
+ },
+ "293": {
+  "name": "1. FC Union Berlin",
+  "file": "1-fc-union-berlin.png",
+  "w": 512,
+  "h": 187,
+  "ratio": 2.738,
+  "svg": "https://storage.fussballdaten.de/source/1/vereinhaupt/282/svg/1__fc_union_berlin_LcuV6.svg"
+ },
+ "374": {
+  "name": "1. FSV Mainz 05",
+  "file": "1-fsv-mainz-05.png",
+  "w": 512,
+  "h": 477,
+  "ratio": 1.073,
+  "svg": "https://storage.fussballdaten.de/source/1/vereinhaupt/325/svg/1__fsv_mainz_05_yhyCx.svg"
+ },
+ "462": {
+  "name": "1899 Hoffenheim",
+  "file": "1899-hoffenheim.png",
+  "w": 512,
+  "h": 612,
+  "ratio": 0.837,
+  "svg": "https://storage.fussballdaten.de/source/1/vereinhaupt/374/svg/1899_hoffenheim_TJZsz.svg"
+ },
+ "368": {
+  "name": "Bayer Leverkusen",
+  "file": "bayer-leverkusen.png",
+  "w": 512,
+  "h": 401,
+  "ratio": 1.277,
+  "svg": "https://storage.fussballdaten.de/source/1/vereinhaupt/321/svg/bayer_leverkusen__9Si9.svg"
+ },
+ "318": {
+  "name": "Borussia Dortmund",
+  "file": "borussia-dortmund.png",
+  "w": 512,
+  "h": 512,
+  "ratio": 1.0,
+  "svg": "https://storage.fussballdaten.de/source/1/vereinhaupt/294/svg/borussia_dortmund_7Kkhv.svg"
+ },
+ "381": {
+  "name": "Borussia Mönchengladbach",
+  "file": "borussia-m-nchengladbach.png",
+  "w": 512,
+  "h": 817,
+  "ratio": 0.627,
+  "svg": "https://storage.fussballdaten.de/source/1/vereinhaupt/329/svg/borussia_moenchengla_uuCYq.svg"
+ },
+ "335": {
+  "name": "Eintracht Frankfurt",
+  "file": "eintracht-frankfurt.png",
+  "w": 512,
+  "h": 512,
+  "ratio": 1.0,
+  "svg": "https://storage.fussballdaten.de/source/1/vereinhaupt/302/svg/eintracht_frankfurt_lyVN-.svg"
+ },
+ "280": {
+  "name": "FC Augsburg",
+  "file": "fc-augsburg.png",
+  "w": 512,
+  "h": 665,
+  "ratio": 0.77,
+  "svg": "https://storage.fussballdaten.de/source/1/vereinhaupt/275/svg/fc_augsburg_2VKq9.svg"
+ },
+ "383": {
+  "name": "FC Bayern München",
+  "file": "fc-bayern-m-nchen.png",
+  "w": 512,
+  "h": 512,
+  "ratio": 1.0,
+  "svg": "https://storage.fussballdaten.de/source/1/vereinhaupt/330/svg/fc_bayern_muenchen_T_XXi.svg"
+ },
+ "414": {
+  "name": "FC Schalke 04",
+  "file": "fc-schalke-04.png",
+  "w": 512,
+  "h": 512,
+  "ratio": 1.0,
+  "svg": "https://storage.fussballdaten.de/source/1/vereinhaupt/347/svg/fc_schalke_04_cIBcY.svg"
+ },
+ "347": {
+  "name": "Hamburger SV",
+  "file": "hamburger-sv.png",
+  "w": 512,
+  "h": 379,
+  "ratio": 1.351,
+  "svg": "https://storage.fussballdaten.de/source/1/vereinhaupt/309/svg/hamburger_sv_HqKj7.svg"
+ },
+ "876": {
+  "name": "RB Leipzig",
+  "file": "rb-leipzig.png",
+  "w": 512,
+  "h": 337,
+  "ratio": 1.519,
+  "svg": "https://storage.fussballdaten.de/source/1/vereinhaupt/7059/svg/rb_leipzig_NfSJo.svg"
+ },
+ "340": {
+  "name": "SC Freiburg",
+  "file": "sc-freiburg.png",
+  "w": 512,
+  "h": 712,
+  "ratio": 0.719,
+  "svg": "https://storage.fussballdaten.de/source/1/vereinhaupt/305/svg/sc_freiburg_Vrj0Y.svg"
+ },
+ "459": {
+  "name": "SC Paderborn 07",
+  "file": "sc-paderborn-07.png",
+  "w": 512,
+  "h": 354,
+  "ratio": 1.446,
+  "svg": "https://storage.fussballdaten.de/source/1/vereinhaupt/372/svg/sc_paderborn_07_qrVbZ.svg"
+ },
+ "328": {
+  "name": "SV Elversberg",
+  "file": "sv-elversberg.png",
+  "w": 512,
+  "h": 512,
+  "ratio": 1.0,
+  "svg": "https://storage.fussballdaten.de/source/1/vereinhaupt/299/svg/sv_elversberg_r_ovD.svg"
+ },
+ "303": {
+  "name": "SV Werder Bremen",
+  "file": "sv-werder-bremen.png",
+  "w": 512,
+  "h": 768,
+  "ratio": 0.667,
+  "svg": "https://storage.fussballdaten.de/source/1/vereinhaupt/287/svg/sv_werder_bremen_ivZPc.svg"
+ },
+ "425": {
+  "name": "VfB Stuttgart",
+  "file": "vfb-stuttgart.png",
+  "w": 512,
+  "h": 557,
+  "ratio": 0.919,
+  "svg": "https://storage.fussballdaten.de/source/1/vereinhaupt/353/svg/vfb_stuttgart_Wh42S.svg"
+ }
+}
