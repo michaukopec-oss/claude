@@ -122,6 +122,20 @@ card at all.
   must carry the `ET` flag or the same surname reads as two goals for two
   different teams in one post. `result_copy._scorers()` handles this.
 
+## The Canva -> Buffer handoff is proven
+
+Buffer takes an image only as a url it fetches itself, so the one step nothing
+had ever exercised was whether Buffer's fetcher could read a signed Canva S3
+export link. It can. On 2026-09-18 the Wolfsburg-Darmstadt pre-match card went
+out live to all three channels straight from an export url, and every response
+echoed the right dimensions (1080x1350 portrait to Instagram, 1600x900
+landscape to Facebook and X) -- Buffer could only report those by retrieving
+and inspecting the file.
+
+The consequence is the expiry gate, not the fetch: Buffer reads the url at send
+time, not at create time, so a scheduled post whose export has expired by then
+publishes nothing. Publish now, or re-export before you schedule.
+
 ## Autonomy
 
 Publishing **is** autonomous, by the user's decision of 2026-09-18: on a
