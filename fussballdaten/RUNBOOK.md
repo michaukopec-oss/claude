@@ -219,11 +219,15 @@ attached to a fresh-session Routine. Do that before scaling past one matchday.
 
 Matchday 4, one match per kickoff slot:
 
-| fixture | match | fire (UTC) |
-|---|---|---|
-| 883113 | Bayern – Union Berlin | Fri 20:15 |
-| 883118 | Hamburg – Köln | Sat 15:15 |
-| 883114 | Stuttgart – Dortmund | Sat 18:15 |
-| 883115 | Leverkusen – RB Leipzig | Sun 15:15 |
-| 883120 | Schalke – Elversberg | Sun 17:15 |
-| 883121 | Paderborn – Hoffenheim | Sun 19:15 |
+| fixture | match | fire (UTC) | state |
+|---|---|---|---|
+| 883113 | Bayern – Union Berlin | Fri 20:15 | disabled |
+| 883118 | Hamburg – Köln | Sat 15:15 | disabled |
+| 883114 | Stuttgart – Dortmund | Sat 18:15 | disabled |
+| 883115 | Leverkusen – RB Leipzig | Sun 15:15 | armed |
+| 883120 | Schalke – Elversberg | Sun 17:15 | armed |
+| 883121 | Paderborn – Hoffenheim | Sun 19:15 | armed |
+
+The Friday and Saturday wake-ups are disabled, not deleted: the user posted
+those matchdays by hand and had them scheduled in Buffer, so an automated run
+would have doubled up. Re-enable rather than recreate if that changes.
