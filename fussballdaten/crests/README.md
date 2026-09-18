@@ -43,3 +43,23 @@ Only 5 of the 18 are square. Range is 0.63 (Gladbach) to 2.74 (Union).
     pip install cairosvg
     # pull svgLogo from /v2/fixture/{id}/prematch for each club, then:
     cairosvg.svg2png(bytestring=svg, output_width=512)
+
+## Canva asset ids
+
+Each entry now carries `canva_asset_id`. The crests were uploaded to the Canva
+account's asset library via `upload-asset-from-url`, pointing at the raw
+GitHub URLs in this directory — which also neatly sidesteps the 2048-char
+`url` limit that ruled out data URIs.
+
+They are named `fdcrest <teamId> <club>` so they group together when searched.
+
+The pipeline fills a crest frame with `update_fill` using `canva_asset_id`,
+then applies `fit_crest(ratio, ...)` from `../result_card.py` to size and crop
+it. It never needs to upload anything per match.
+
+Note: these live in the account's Uploads library, not inside the Fussballdaten
+brand kit's "Graphics and components" panel (`kAHVeU_qTwI`). The Canva connector
+exposes no write access to brand kit contents — `list-brand-kits` is read-only
+and `create-brand-template-draft` is refused for lack of scope. Adding them to
+the brand kit panel is a manual drag in the Canva UI. It makes no difference to
+the automation, which addresses assets by id.
