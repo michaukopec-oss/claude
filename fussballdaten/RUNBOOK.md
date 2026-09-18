@@ -70,6 +70,29 @@ card at all.
 
    Twitter rejects `notification` scheduling — use `automatic`.
 
+   The exact call shape, because the required metadata is easy to miss and the
+   error arrives only after the card is already built:
+
+       create_post(
+         channelId      = <one of the three above>,
+         schedulingType = "automatic",
+         mode           = "shareNow",
+         text           = copy["instagram" | "facebook" | "x"],
+         assets   = [{"image": {"url": <png export url>,
+                                "metadata": {"altText": "<home> <score> <away>, "
+                                             "<competition>, <matchday>. Spieltag"}}}],
+         metadata = ...per service, see below
+       )
+
+   | service | required `metadata` |
+   |---|---|
+   | instagram | `{"instagram": {"type": "post", "shouldShareToFeed": false}}` |
+   | facebook  | `{"facebook": {"type": "post"}}` |
+   | twitter   | none |
+
+   `altText` is required whenever an image carries a `metadata` object at all.
+   Instagram and TikTok reject a post with no image asset.
+
 ## Failure modes
 
 | condition | action |
