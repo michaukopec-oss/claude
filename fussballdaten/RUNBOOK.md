@@ -221,6 +221,79 @@ The durable fix, when a whole season is scheduled rather than one matchday, is
 to create the Routines from the claude.ai Routines UI, where connectors can be
 attached to a fresh-session Routine. Do that before scaling past one matchday.
 
+## Measured run timing (MD4, Bayern-Union)
+
+Kickoff 18:30 UTC. Every figure below is from a logged timestamp, not an
+estimate; `generatedAt` in the payload is the API's own clock.
+
+| moment | UTC | from kickoff |
+|---|---|---|
+| wake-up fires | 20:15:35 | +105:35 |
+| last `status: live` poll (minute 96) | ~20:23:05 | +113:05 |
+| payload flips to `status: post` (`generatedAt`) | 20:23:27 | +113:27 |
+| Instagram live | 20:26:21 | +116:21 |
+| Facebook live | 20:26:37 | +116:37 |
+| X live | 20:26:46 | +116:46 |
+
+Ready to all three channels: **3 min 20 s**. Both designs had been created
+from their templates during the wait, so a run that starts cold adds roughly
+another minute.
+
+The number that matters is not the publish time, it is **+113**: the API
+published the result within seconds of the final whistle, and the whistle
+itself came 113 minutes after kickoff (two halves, halftime, and about eight
+minutes of stoppage). The cutoff at +120 left six minutes of slack on a match
+with no injury delay and no VAR review. A match with either would miss it and
+abandon a perfectly good report.
+
+**Raise the cutoff to kickoff+150.** Polling is nearly free and the gates,
+not the clock, are what stop a bad post; the only thing +120 buys is throwing
+away results that arrive a few minutes late.
+
+## What else the API carries
+
+Beyond what the two cards use today:
+
+- **Per-player ratings** — `lineup.starting[].ratingSpm` and
+  `stats.averageRatingSpm` (Sportmonks). `ratingFd` is in the schema but was
+  still null three weeks after MD1, so treat it as not available.
+- **Lineups** — starting XI and bench with shirt number, position, captain
+  flag, minutes played, goals, assists, cards, substitution minutes. The
+  per-player `shots`/`passes`/`passAccuracy` fields were null in every
+  fixture checked.
+- **Events** — `goals` (with `goalType`, e.g. `penalty`, and a German
+  `detail`), `cards` (with the reason, e.g. "Meckern"), `substitutions`, and a
+  merged `events` list, all with `minuteLabel`.
+- **Richer team stats than the card shows** — `shots` split into
+  onGoal/offGoal/blocked/insideBox/woodwork, `bigChances` created and missed,
+  `passes` total/successful/accuracy/key, `crosses`, tackles, interceptions,
+  offsides, saves.
+- **Head-to-head** — overall and per-venue records plus the last five meetings.
+- **Standing** — rank, previous rank, rank change, W/D/L, goals, points.
+
+Other endpoints (all `Authorization: <raw token>`):
+
+| endpoint | gives |
+|---|---|
+| `/v2/competitions` | every competition and its id |
+| `/v2/competition/{id}` | one competition's metadata |
+| `/v2/competition/{id}/standings?season=` | the full 18-row table |
+| `/v2/competition/{id}/fixtures?season=` | the season's fixtures |
+| `/v2/competition/{id}/matchday?season=&matchday=` | one matchday's fixtures |
+| `/v2/fixture/{id}` | the bare fixture |
+
+`/v2/competition/{id}/matchday` **does** honour a `matchday` parameter, unlike
+`/v2/fixtures`, which ignores it and always returns the current one.
+
+Prematch additionally carries `topScorers` (goals, assists, matches per player)
+and `absences` (reason, free-text info, since/until).
+
+### Two fields arrive late
+
+`ratingSpm` and `attendance` were both null in the payload the run published
+from and both populated by the next morning. Anything built on them cannot run
+at kickoff+115; it needs a second pass hours later, or the next day.
+
 ### Fire times
 
     fire   = kickoff + 105 min
