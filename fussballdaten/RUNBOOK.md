@@ -120,6 +120,19 @@ everything created afterwards uses +150.
 
 ## Things that will bite
 
+- **`post-live` is a real status, and it is not ready.** Hamburg-Koeln sat in
+  `status: post-live` for nearly five minutes between the whistle and `post`.
+  `ready()` rejects it because it only accepts `post`, which is correct: the
+  score in that window is the live feed's, not the official record. Do not add
+  `post-live` to the accepted set.
+
+- **A late goal is not always a late decision.** Koeln's 90th-minute goal made
+  it 2:1 from 2:0, and the `late` angle would have captioned it "Die
+  Entscheidung faellt spaet" -- the match was settled at 2:0. `_decided_late()`
+  now checks the score before the last goal and only fires when the eventual
+  winner was not already ahead.
+
+
 - **The live feed's score is not the result.** In Bayern-Union (MD4) the
   `status: live` payload read 7:0 at minute 89, 8:0 at minute 94, and the
   final `status: post` payload read 7:0 with seven goal entries running 1:0

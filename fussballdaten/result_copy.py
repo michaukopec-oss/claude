@@ -79,6 +79,31 @@ def _last_goal_minute(d):
     return best
 
 
+def _decided_late(d):
+    """True only if the last goal actually changed who was winning.
+
+    A 90th-minute goal that merely narrows a 2:0 to 2:1 is not a late
+    decision -- the match was settled at 2:0 -- and the "late" headline
+    would claim something the payload disproves. So look at the score
+    *before* the last goal: if the eventual winner was already ahead, the
+    decision did not fall late.
+    """
+    goals = [g for g in (d.get("goals") or []) if g.get("score")]
+    if len(goals) < 1:
+        return False
+    prior = goals[-2]["score"] if len(goals) > 1 else "0:0"
+    try:
+        ph, pa = (int(x) for x in prior.split(":"))
+    except ValueError:
+        return False
+    winner = d["score"].get("winner")
+    if winner == "home":
+        return not ph > pa
+    if winner == "away":
+        return not pa > ph
+    return ph != pa          # a draw: late only if the last goal levelled it
+
+
 def angles(payload):
     """Score-pattern tags. Every one is decidable from the payload alone."""
     d = payload["data"]
@@ -108,7 +133,7 @@ def angles(payload):
                 tags.append("comeback")
 
     last = _last_goal_minute(d)
-    if last is not None and last >= 85 and margin == 1:
+    if last is not None and last >= 85 and margin == 1 and _decided_late(d):
         tags.append("late")
 
     # The winner saw less of the ball than the loser.
