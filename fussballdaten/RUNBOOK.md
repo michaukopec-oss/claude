@@ -15,17 +15,30 @@ and downloaded by hand.
 
 ## Timing
 
-A match is ~105 minutes of wall clock: 90 + halftime + stoppage. The API
-populates postmatch within a minute or two of the whistle.
+A match is 110-120 minutes of wall clock: 90 + about 15 of halftime +
+stoppage at both ends. The API populates postmatch within seconds of the
+whistle — Bayern-Union flipped to `post` at kickoff+113:27.
 
     kickoff + 105 min   first wake — poll
     every 5 min         re-poll while status is still "pre" or "live"
-    kickoff + 120 min   give up, notify, do not publish
+    kickoff + 150 min   give up, notify, do not publish
 
-The +120 cutoff is deliberate. If there is still no postmatch data half an hour
-after a normal match would have ended, something is wrong — abandonment,
-suspension, an API problem — and a card published on bad data is worse than no
-card at all.
+**The cutoff is a give-up deadline, not a publish time.** The run publishes the
+moment `ready()` is true, whichever minute that falls on; the cutoff only says
+when to stop waiting. Raising it never delays a post that would have gone out
+anyway — it only turns "published nothing" into "published a few minutes
+later" for a match that runs long.
+
+That is why it is +150 and not +120. The old +120 was written against an
+estimate of "~105 minutes of wall clock", which is roughly ten minutes short:
+it left seven minutes of margin on a match with no VAR review and no injury
+delay, and one long stoppage would have thrown away a perfectly good report.
+The abandonment case the cutoff was written for — a suspended match, an API
+outage — does not resolve at +145 either, so the later deadline gives up
+nothing.
+
+The five matchday 4 runs armed before this change keep their +120 prompts;
+everything created afterwards uses +150.
 
 ## Sequence
 
@@ -246,9 +259,9 @@ minutes of stoppage). The cutoff at +120 left six minutes of slack on a match
 with no injury delay and no VAR review. A match with either would miss it and
 abandon a perfectly good report.
 
-**Raise the cutoff to kickoff+150.** Polling is nearly free and the gates,
-not the clock, are what stop a bad post; the only thing +120 buys is throwing
-away results that arrive a few minutes late.
+The cutoff is **kickoff+150** as of this measurement. Polling is nearly free
+and the gates, not the clock, are what stop a bad post; the only thing +120
+bought was throwing away results that arrive a few minutes late.
 
 ## What else the API carries
 
@@ -297,7 +310,7 @@ at kickoff+115; it needs a second pass hours later, or the next day.
 ### Fire times
 
     fire   = kickoff + 105 min
-    cutoff = kickoff + 120 min
+    cutoff = kickoff + 150 min   (the MD4 runs below were armed at +120)
 
 Matchday 4, one match per kickoff slot:
 

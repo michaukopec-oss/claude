@@ -24,7 +24,7 @@ unaffected either way.
 
 ```
 Automated post-match report: <HOME> vs <AWAY>, Bundesliga fixture <FIXTURE_ID>.   <-- CHANGE
-Hard cutoff: <CUTOFF_UTC>.                                                        <-- CHANGE
+Hard cutoff: <CUTOFF_UTC>.  (kickoff + 150 min)                                  <-- CHANGE
 Hashtags: "#Bundesliga <FIXTURE_HASHTAG> #<N>Spieltag #fussballdaten"             <-- CHANGE
           (four here on purpose: Instagram takes at most five, and the
            caption is trimmed to the first five if you add more)
@@ -98,9 +98,11 @@ edited by the user at claude.ai/code/routines, or disabled by their own run.
 ## Gotchas
 
 - **Schedule stagger.** Routine runs "may start a few minutes after the
-  scheduled time." Our fire-to-cutoff window is only 15 minutes, so set the
-  one-off at kickoff+105 and set the cutoff in the prompt to kickoff+135 rather
-  than +120, to keep the stagger from eating the whole polling window.
+  scheduled time." Fire at kickoff+105 and put kickoff+150 in the prompt as the
+  cutoff. The cutoff is a give-up deadline, not a publish time — the run posts
+  the moment the payload is ready — so a late deadline costs nothing and leaves
+  room for both the stagger and a match that runs long. A real whistle lands
+  around kickoff+113.
 - **Daily routine cap.** Routine runs are capped per account per day. Six
   matches on one matchday is fine, all nine plus pre-match would need checking
   at claude.ai/settings/usage. One-off runs do not count against the cap;
