@@ -333,12 +333,16 @@ Matchday 4, one match per kickoff slot:
 | 883118 | Hamburg – Köln | Sat 15:15 | +118:07 | published |
 | 883114 | Stuttgart – Dortmund | Sat 18:15 | +121:10 | **held** — past +120, user chose not to publish |
 | 883115 | Leverkusen – RB Leipzig | Sun 15:15 | +121:23 | held, then published on the user's word |
-| 883120 | Schalke – Elversberg | Sun 17:15 | — | re-armed at +150 |
-| 883121 | Paderborn – Hoffenheim | Sun 19:15 | — | re-armed at +150 |
+| 883120 | Schalke – Elversberg | Sun 17:15 | +121:05 | published (first run at +150) |
+| 883121 | Paderborn – Hoffenheim | Sun 19:15 | +111:54 | published |
 
-**Four matches, four readiness times: +113, +118, +121, +121.** The +120 cutoff
-was missed twice in a row. That is the whole case for +150 — see the timing
-section above.
+**Six matches: +113, +118, +121, +121, +121, +112.** Four of six landed past
++120, which is the whole case for +150. The spread is 112 to 122 minutes, so
+plan for the late end and treat anything under +115 as the exception.
+
+`post-live` showed up in four of the six and lasted up to five minutes.
+Paderborn went straight from `live` to `post` between two 20-second polls, so
+do not build anything that waits for `post-live` to appear.
 
 Pre-match posts scheduled by hand in Buffer do not collide with these — they
 are a different post about a different moment in the match, so a

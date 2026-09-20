@@ -154,12 +154,19 @@ _HEADLINE = {
     "clean_sheet": "Zu null.",
     "draw": "Punkteteilung.",
     "narrow": "Eine enge Angelegenheit.",
+    "possession_paradox": "Weniger Ballbesitz, mehr daraus gemacht.",
 }
 
 
 def _headline(tags):
     """First matching tag wins — ordered by how much it says about the match."""
-    for t in ("comeback", "late", "rout", "goalfest", "clean_sheet", "draw", "narrow"):
+    # Score-shape angles first: they describe the result. `possession_paradox`
+    # describes the manner, so it only speaks when nothing about the scoreline
+    # is worth saying -- which is what a two-goal win with no clean sheet and
+    # no comeback is. Without it such a match falls through to the generic
+    # line, which says nothing at all.
+    for t in ("comeback", "late", "rout", "goalfest", "clean_sheet", "draw",
+              "narrow", "possession_paradox"):
         if t in tags:
             return _HEADLINE[t]
     return "Das Spiel ist gelaufen."
