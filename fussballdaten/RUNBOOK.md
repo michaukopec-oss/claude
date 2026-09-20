@@ -327,15 +327,28 @@ at kickoff+115; it needs a second pass hours later, or the next day.
 
 Matchday 4, one match per kickoff slot:
 
-| fixture | match | fire (UTC) |
-|---|---|---|
-| 883113 | Bayern – Union Berlin | Fri 20:15 |
-| 883118 | Hamburg – Köln | Sat 15:15 |
-| 883114 | Stuttgart – Dortmund | Sat 18:15 |
-| 883115 | Leverkusen – RB Leipzig | Sun 15:15 |
-| 883120 | Schalke – Elversberg | Sun 17:15 |
-| 883121 | Paderborn – Hoffenheim | Sun 19:15 |
+| fixture | match | fire (UTC) | ready at | outcome |
+|---|---|---|---|---|
+| 883113 | Bayern – Union Berlin | Fri 20:15 | +113:27 | published |
+| 883118 | Hamburg – Köln | Sat 15:15 | +118:07 | published |
+| 883114 | Stuttgart – Dortmund | Sat 18:15 | +121:10 | **held** — past +120, user chose not to publish |
+| 883115 | Leverkusen – RB Leipzig | Sun 15:15 | +121:23 | held, then published on the user's word |
+| 883120 | Schalke – Elversberg | Sun 17:15 | — | re-armed at +150 |
+| 883121 | Paderborn – Hoffenheim | Sun 19:15 | — | re-armed at +150 |
 
-All six are armed. Pre-match posts scheduled by hand in Buffer do not collide
-with these — they are a different post about a different moment in the match,
-so a hand-scheduled pre-match card is not a reason to stand a result run down.
+**Four matches, four readiness times: +113, +118, +121, +121.** The +120 cutoff
+was missed twice in a row. That is the whole case for +150 — see the timing
+section above.
+
+Pre-match posts scheduled by hand in Buffer do not collide with these — they
+are a different post about a different moment in the match, so a
+hand-scheduled pre-match card is not a reason to stand a result run down.
+
+### A held run is not a finished run
+
+A run whose payload arrives past the cutoff has built cards and no post. That
+is a state someone has to decide about, so it is reported to the user the
+moment it happens, with the cards built and ready to go. Stuttgart-Dortmund
+sat overnight because that report was never sent, and by the time it was the
+result was a day old and the user let it go. The gate did its job; the silence
+after it did not.
